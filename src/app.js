@@ -10,7 +10,10 @@ app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/user", require("./routes/user.route"))
 app.use("/api/author", require("./routes/author.route"));
 app.use("/api/book", require("./routes/book.route"));
+app.use("/api/issue", require("./routes/issue.route"));
+
 module.exports = app;
+
 
 
 

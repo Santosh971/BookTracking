@@ -1,20 +1,35 @@
-
+const mongoose = require("mongoose");
 const User = require("../models/user.model");
+const ApiResponse = require("../util/ApiResponse");
 
 
 const getAllUser = async () => {
     const users = await User.find();
-    return users;
+    return ApiResponse.ok(users, "User List")
 }
 
 const getUserById = async (id) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return ApiResponse.error("Id Format is Wrong");
+    }
     const user = await User.findById(id);
-    return user;
+    if (!user) {
+        return ApiResponse.notFound("User Not Found");
+    }
+
+    return ApiResponse.ok(user, "User Found Successfully");
 }
 
 const deleteUserById = async (id) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return ApiResponse.error("Id Format is Wrong");
+    }
     const user = await User.findByIdAndDelete(id);
-    return user;
+    if (!user) {
+        return ApiResponse.notFound("User Not Found");
+    }
+
+    return ApiResponse.ok(user, "User delete Successfully");
 }
 
 const updateUser = async (data) => {
@@ -30,9 +45,9 @@ const updateUser = async (data) => {
     )
 
     if (!user) {
-        throw new Error("User not Found");
+        return ApiResponse.badRequest("User Not Update or Bad Request");
     }
-    return user;
+    return ApiResponse.ok(user, "User update Successfully");
 }
 
 module.exports = { getAllUser, getUserById, deleteUserById, updateUser };

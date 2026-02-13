@@ -1,10 +1,8 @@
 const authService = require("../services/auth.service");
-
+const userService = require("../services/user.service");
 exports.register = async (req, res) => {
-    const registerRes = await authService.register(req.body);
-    console.log("req body : ", req.body)
-
-    return res.status(201).json({ isSuccess: true, data: registerRes, message: "User register Successfull", httpStatus: 201 });
+    const user = await authService.register(req.body);
+    return res.status(user.statusCode).json(user);
 }
 
 
